@@ -1,10 +1,15 @@
-const defaultAwesomeFunction = (name) => {
-  const returnStr = `I am the Default Awesome Function, fellow comrade! - ${name}`;
-  return returnStr;
+import LRU from 'lru-cache';
+
+const memoize = (fn, {hasher = ((...args) => args.toString()), ...options}) => {
+  const cache = new LRU({...options});
+  return (...args) => {
+    const key = hasher(...args);
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    cache.set(key, fn(...args));
+    return cache.get(key);
+  };
 };
 
-const awesomeFunction = () => 'I am just an Awesome Function';
-
-export default defaultAwesomeFunction;
-
-export { awesomeFunction };
+export default memoize;
