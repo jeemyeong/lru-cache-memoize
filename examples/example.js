@@ -1,4 +1,4 @@
-const memoize = require('../lib').default;
+const memoize = require('../lib');
 
 const add = num => console.log(num) || num+1;
 const memoAdd = memoize(add, {max: 2});
