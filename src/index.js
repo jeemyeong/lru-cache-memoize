@@ -1,18 +1,7 @@
 import LRU from 'lru-cache';
 
-const defaultOptions = {
-  hasher: ((...args) => args.toString())
-}
-
-const memoize = (fn, options) => {
-  const optionsWithDefault = {
-    ...defaultOptions,
-    ...options
-  }
-  const { 
-    hasher 
-  } = optionsWithDefault;
-  const cache = new LRU({ ...optionsWithDefault});
+const memoize = (fn, { hasher = ((...args) => args.toString()), ...options } = {}) => {
+  const cache = new LRU({ ...options });
   return (...args) => {
     const key = hasher(...args);
     if (cache.has(key)) {
